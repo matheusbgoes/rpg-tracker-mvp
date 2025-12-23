@@ -1,0 +1,161 @@
+:root {
+    /* Paleta The System */
+    --bg-void: #050505;
+    --system-blue: #00a8ff;
+    --system-blue-dim: rgba(0, 168, 255, 0.1);
+    --system-alert: #ff3333;
+    --text-main: #ffffff;
+    --text-dim: #aabbc9;
+}
+
+body { 
+    background-color: var(--bg-void);
+    /* Grid de fundo estilo "Dungeon Break" */
+    background-image: 
+        linear-gradient(rgba(0, 168, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 168, 255, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+    background-position: center top;
+    color: var(--text-main);
+    font-family: 'Rajdhani', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* Animação de Flutuação (Holograma) */
+@keyframes holograma {
+    0% { transform: translateY(0px); box-shadow: 0 0 15px rgba(0, 168, 255, 0.05); border-color: rgba(0, 168, 255, 0.3); }
+    50% { transform: translateY(-6px); box-shadow: 0 15px 30px rgba(0, 168, 255, 0.15); border-color: rgba(0, 168, 255, 0.6); }
+    100% { transform: translateY(0px); box-shadow: 0 0 15px rgba(0, 168, 255, 0.05); border-color: rgba(0, 168, 255, 0.3); }
+}
+
+@keyframes pulse-alert {
+    0% { box-shadow: 0 0 0 0 rgba(255, 51, 51, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(255, 51, 51, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 51, 51, 0); }
+}
+
+@keyframes blink { 
+    50% { opacity: 0.5; } 
+}
+
+h1, h2, h3, h4, .font-tech {
+    font-family: 'Orbitron', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* --- Janelas do Sistema --- */
+.system-window {
+    background-color: rgba(6, 15, 25, 0.9); 
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(0, 168, 255, 0.3);
+    position: relative;
+    margin-bottom: 30px;
+    animation: holograma 6s ease-in-out infinite;
+}
+
+/* Cantos Tech */
+.system-window::before {
+    content: ''; position: absolute; top: -1px; left: -1px; width: 8px; height: 8px; 
+    border-top: 2px solid var(--system-blue); border-left: 2px solid var(--system-blue);
+}
+.system-window::after {
+    content: ''; position: absolute; bottom: -1px; right: -1px; width: 8px; height: 8px; 
+    border-bottom: 2px solid var(--system-blue); border-right: 2px solid var(--system-blue);
+}
+
+.window-content {
+    padding: 25px;
+    background: repeating-linear-gradient(0deg, rgba(0, 168, 255, 0.01), rgba(0, 168, 255, 0.01) 1px, transparent 1px, transparent 3px);
+}
+
+/* --- Rank Badge --- */
+.rank-box {
+    width: 85px; height: 85px;
+    background: rgba(0,0,0,0.7);
+    border: 2px solid var(--system-blue);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2.8rem;
+    color: var(--system-blue);
+    box-shadow: 0 0 15px var(--system-blue-dim);
+    text-shadow: 0 0 10px var(--system-blue);
+}
+.rank-s { color: #ffd700; border-color: #ffd700; text-shadow: 0 0 15px #ffd700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
+
+/* --- Barra de XP --- */
+.xp-bar-container {
+    background: rgba(0,0,0,0.6);
+    border: 1px solid rgba(0, 168, 255, 0.3);
+    height: 10px; margin-top: 8px; overflow: hidden;
+}
+.xp-bar-fill {
+    background: var(--system-blue);
+    height: 100%; position: relative;
+    box-shadow: 0 0 10px var(--system-blue);
+    transition: width 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* --- Stats Grid --- */
+.stat-box {
+    border: 1px solid rgba(255,255,255,0.05);
+    background: rgba(255,255,255,0.02);
+    padding: 10px;
+    transition: 0.3s;
+}
+.stat-box:hover { background: rgba(0, 168, 255, 0.1); border-color: var(--system-blue); }
+
+/* --- Input --- */
+.input-system {
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid rgba(0, 168, 255, 0.4);
+    color: #fff; padding: 15px;
+    font-family: 'Rajdhani', sans-serif; font-size: 1.2rem;
+    transition: all 0.3s;
+}
+.input-system:focus {
+    background: rgba(0, 20, 40, 0.9);
+    border-color: var(--system-blue);
+    box-shadow: 0 0 20px rgba(0, 168, 255, 0.25);
+    outline: none; color: #fff;
+}
+
+.btn-system {
+    background: rgba(0, 168, 255, 0.1);
+    border: 1px solid var(--system-blue);
+    color: var(--system-blue);
+    font-family: 'Orbitron'; font-weight: bold; letter-spacing: 1px;
+    transition: 0.3s;
+}
+.btn-system:hover {
+    background: var(--system-blue); color: #000; box-shadow: 0 0 20px var(--system-blue);
+}
+
+/* --- Quest List --- */
+.quest-row {
+    background: rgba(255, 255, 255, 0.02);
+    border-left: 3px solid #444;
+    padding: 15px; margin-bottom: 10px;
+    transition: all 0.2s; position: relative;
+}
+.quest-row:hover {
+    transform: translateX(5px);
+    background: rgba(0, 168, 255, 0.08);
+    border-left-color: var(--system-blue);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.status-tag { font-size: 0.7rem; padding: 2px 6px; border: 1px solid #555; color: #888; }
+.status-tag.active { border-color: var(--system-blue); color: var(--system-blue); }
+.status-tag.done { border-color: #00ff00; color: #00ff00; text-shadow: 0 0 5px rgba(0,255,0,0.5); }
+
+.btn-icon { color: #666; transition: 0.2s; }
+.btn-icon:hover { color: #fff; transform: scale(1.1); }
+.btn-icon.del:hover { color: var(--system-alert); text-shadow: 0 0 10px var(--system-alert); }
+
+/* Animação para Pontos Disponíveis */
+.points-alert {
+    animation: pulse-alert 2s infinite;
+    cursor: pointer;
+}

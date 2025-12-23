@@ -1,84 +1,339 @@
 <!DOCTYPE html>
-<html lang="pt-br" xmlns="http://www.thymeleaf.org">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title> MVP App - Início</title>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Interface - Hunter Mode</title>
 
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
 
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <style>
+        :root {
+            /* Paleta The System */
+            --bg-void: #050505;
+            --system-blue: #00a8ff;
+            --system-blue-dim: rgba(0, 168, 255, 0.1);
+            --system-alert: #ff3333;
+            --text-main: #ffffff;
+            --text-dim: #aabbc9;
+        }
 
-        <style>
-            body{
-                background-color: #f8f9a;
-            }
-            .card-custom {
-                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            }
-        </style>
-    </head>
-    <body>
+        body { 
+            background-color: var(--bg-void);
+            /* Grid de fundo estilo "Dungeon Break" */
+            background-image: 
+                linear-gradient(rgba(0, 168, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 168, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            background-position: center top;
+            color: var(--text-main);
+            font-family: 'Rajdhani', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
 
-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
-            <div class="container">
-                <a class="navbar-brand" href="#">Meu MVP Spring Boot</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Tarefas</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Configurações</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-    <div class="container">
-        
-        <div class="text-center mb-5">
-            <h1 class="display-5 fw-bold">Bem-vindo ao Sistema</h1>
-            <p class="lead text-muted" th:text="${mensagem}">
-                Esta é uma mensagem padrão caso a variável 'mensagem' não chegue do Controller.
-            </p>
-        </div>
+        /* Animação de Flutuação (Holograma) */
+        @keyframes holograma {
+            0% { transform: translateY(0px); box-shadow: 0 0 15px rgba(0, 168, 255, 0.05); border-color: rgba(0, 168, 255, 0.3); }
+            50% { transform: translateY(-6px); box-shadow: 0 15px 30px rgba(0, 168, 255, 0.15); border-color: rgba(0, 168, 255, 0.6); }
+            100% { transform: translateY(0px); box-shadow: 0 0 15px rgba(0, 168, 255, 0.05); border-color: rgba(0, 168, 255, 0.3); }
+        }
 
-        <div class="row justify-content-center">
-            <div class="col-md-10">
-                <div class="card card-custom">
-                    <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
-                        <h5 class="mb-0 text-primary fw-bold"><i class="bi bi-list-check me-2"></i>Lista de Itens (Exemplo)</h5>
-                        <button class="btn btn-sm btn-success"><i class="bi bi-plus-lg"></i> Novo Item</button>
+        @keyframes pulse-alert {
+            0% { box-shadow: 0 0 0 0 rgba(255, 51, 51, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 51, 51, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 51, 51, 0); }
+        }
+
+        h1, h2, h3, h4, .font-tech {
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* --- Janelas do Sistema --- */
+        .system-window {
+            background-color: rgba(6, 15, 25, 0.9); 
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(0, 168, 255, 0.3);
+            position: relative;
+            margin-bottom: 30px;
+            animation: holograma 6s ease-in-out infinite;
+        }
+
+        /* Cantos Tech */
+        .system-window::before {
+            content: ''; position: absolute; top: -1px; left: -1px; width: 8px; height: 8px; 
+            border-top: 2px solid var(--system-blue); border-left: 2px solid var(--system-blue);
+        }
+        .system-window::after {
+            content: ''; position: absolute; bottom: -1px; right: -1px; width: 8px; height: 8px; 
+            border-bottom: 2px solid var(--system-blue); border-right: 2px solid var(--system-blue);
+        }
+
+        .window-content {
+            padding: 25px;
+            background: repeating-linear-gradient(0deg, rgba(0, 168, 255, 0.01), rgba(0, 168, 255, 0.01) 1px, transparent 1px, transparent 3px);
+        }
+
+        /* --- Rank Badge --- */
+        .rank-box {
+            width: 85px; height: 85px;
+            background: rgba(0,0,0,0.7);
+            border: 2px solid var(--system-blue);
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.8rem;
+            color: var(--system-blue);
+            box-shadow: 0 0 15px var(--system-blue-dim);
+            text-shadow: 0 0 10px var(--system-blue);
+        }
+        .rank-s { color: #ffd700; border-color: #ffd700; text-shadow: 0 0 15px #ffd700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
+
+        /* --- Barra de XP --- */
+        .xp-bar-container {
+            background: rgba(0,0,0,0.6);
+            border: 1px solid rgba(0, 168, 255, 0.3);
+            height: 10px; margin-top: 8px; overflow: hidden;
+        }
+        .xp-bar-fill {
+            background: var(--system-blue);
+            height: 100%; position: relative;
+            box-shadow: 0 0 10px var(--system-blue);
+            transition: width 1s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        /* --- Stats Grid --- */
+        .stat-box {
+            border: 1px solid rgba(255,255,255,0.05);
+            background: rgba(255,255,255,0.02);
+            padding: 10px;
+            transition: 0.3s;
+        }
+        .stat-box:hover { background: rgba(0, 168, 255, 0.1); border-color: var(--system-blue); }
+
+        /* --- Input --- */
+        .input-system {
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(0, 168, 255, 0.4);
+            color: #fff; padding: 15px;
+            font-family: 'Rajdhani', sans-serif; font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+        .input-system:focus {
+            background: rgba(0, 20, 40, 0.9);
+            border-color: var(--system-blue);
+            box-shadow: 0 0 20px rgba(0, 168, 255, 0.25);
+            outline: none; color: #fff;
+        }
+
+        .btn-system {
+            background: rgba(0, 168, 255, 0.1);
+            border: 1px solid var(--system-blue);
+            color: var(--system-blue);
+            font-family: 'Orbitron'; font-weight: bold; letter-spacing: 1px;
+            transition: 0.3s;
+        }
+        .btn-system:hover {
+            background: var(--system-blue); color: #000; box-shadow: 0 0 20px var(--system-blue);
+        }
+
+        /* --- Quest List --- */
+        .quest-row {
+            background: rgba(255, 255, 255, 0.02);
+            border-left: 3px solid #444;
+            padding: 15px; margin-bottom: 10px;
+            transition: all 0.2s; position: relative;
+        }
+        .quest-row:hover {
+            transform: translateX(5px);
+            background: rgba(0, 168, 255, 0.08);
+            border-left-color: var(--system-blue);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .status-tag { font-size: 0.7rem; padding: 2px 6px; border: 1px solid #555; color: #888; }
+        .status-tag.active { border-color: var(--system-blue); color: var(--system-blue); }
+        .status-tag.done { border-color: #00ff00; color: #00ff00; text-shadow: 0 0 5px rgba(0,255,0,0.5); }
+
+        .btn-icon { color: #666; transition: 0.2s; }
+        .btn-icon:hover { color: #fff; transform: scale(1.1); }
+        .btn-icon.del:hover { color: var(--system-alert); text-shadow: 0 0 10px var(--system-alert); }
+
+        /* Animação para Pontos Disponíveis */
+        .points-alert {
+            animation: pulse-alert 2s infinite;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container py-5" style="max-width: 900px;">
+
+    <div class="text-center mb-5">
+        <h2 class="font-tech" style="color: var(--system-blue); text-shadow: 0 0 15px var(--system-blue);">
+            SYSTEM CONSOLE
+        </h2>
+        <p class="text-dim small font-monospace" style="letter-spacing: 4px; opacity: 0.7;">
+            [ ID: <span th:text="${perfil.tituloSistema}">PLAYER</span> ]
+        </p>
+    </div>
+
+    <div class="system-window">
+        <div class="window-content">
+            <div class="row align-items-center">
+                
+                <div class="col-auto">
+                    <div class="rank-box" 
+                         th:classappend="${nivel >= 50 ? 'rank-s' : ''}"
+                         th:text="${nivel < 10 ? 'E' : (nivel < 20 ? 'D' : (nivel < 30 ? 'C' : (nivel < 40 ? 'B' : (nivel < 50 ? 'A' : 'S'))))}">
+                        E
                     </div>
-                    <div class="card-body p-0">
-                        <table class="table table-hover mb-0">
-                            <thead class="table-light">
-                                <tr>
-                                    <th scope="col">ID</th>
-                                    <th scope="col">Descrição</th>
-                                    <th scope="col">Status</th>
-                                    <th scope="col" class="text-end">Ações</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td>Exemplo de Tarefa Estática</td>
-                                    <td><span class="badge bg-warning text-dark">Pendente</span></td>
-                                    <td class="text-end">
-                                        <button class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i></button>
-                                        <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                </div>
+
+                <div class="col">
+                    <div class="d-flex justify-content-between font-tech mb-1">
+                        <span class="fs-4 text-white" th:text="${perfil.nomeHeroi}">SHADOW MONARCH</span>
+                        <span class="fs-5" style="color: var(--system-blue);">LVL <span th:text="${nivel}">1</span></span>
+                    </div>
+                    
+                    <div class="xp-bar-container">
+                        <div class="xp-bar-fill" 
+                             th:style="'width: ' + (${xpTotal != null ? xpTotal % 100 : 0}) + '%'"></div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between mt-1 font-monospace" style="font-size: 0.8rem; color: var(--text-dim);">
+                        <span th:text="'EXP: ' + (${xpTotal != null ? xpTotal : 0})">EXP: 0</span>
+                        <span>STATUS: HEALTHY</span>
                     </div>
                 </div>
             </div>
+            
+          <div class="row mt-4 pt-3 text-center g-2" style="border-top: 1px solid rgba(255,255,255,0.1);">
+                <div class="col">
+                    <div class="stat-box position-relative">
+                        <span class="d-block font-tech small text-dim">STR</span>
+                        <span class="d-block text-white fs-5 fw-bold" th:text="${perfil.forca}">10</span>
+                        
+                        <a th:if="${perfil.pontosDisponiveis > 0}" 
+                           th:href="@{/distribuir/forca}"
+                           class="position-absolute top-0 end-0 me-1 mt-1 text-info text-decoration-none"
+                           style="font-size: 0.8rem;">[+]</a>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="stat-box position-relative">
+                        <span class="d-block font-tech small text-dim">AGI</span>
+                        <span class="d-block text-white fs-5 fw-bold" th:text="${perfil.agilidade}">10</span>
+                        <a th:if="${perfil.pontosDisponiveis > 0}" th:href="@{/distribuir/agilidade}"
+                           class="position-absolute top-0 end-0 me-1 mt-1 text-info text-decoration-none" style="font-size: 0.8rem;">[+]</a>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="stat-box position-relative">
+                        <span class="d-block font-tech small text-dim">INT</span>
+                        <span class="d-block text-white fs-5 fw-bold" th:text="${perfil.inteligencia}">10</span>
+                        <a th:if="${perfil.pontosDisponiveis > 0}" th:href="@{/distribuir/inteligencia}"
+                           class="position-absolute top-0 end-0 me-1 mt-1 text-info text-decoration-none" style="font-size: 0.8rem;">[+]</a>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="stat-box position-relative">
+                        <span class="d-block font-tech small text-dim">VIT</span>
+                        <span class="d-block text-white fs-5 fw-bold" th:text="${perfil.vitalidade}">10</span>
+                        <a th:if="${perfil.pontosDisponiveis > 0}" th:href="@{/distribuir/vitalidade}"
+                           class="position-absolute top-0 end-0 me-1 mt-1 text-info text-decoration-none" style="font-size: 0.8rem;">[+]</a>
+                    </div>
+                </div>
+            </div>
+
+            <div th:if="${perfil.pontosDisponiveis > 0}" class="mt-3 text-center">
+                <span class="badge bg-danger points-alert font-tech px-3 py-2">
+                    <i class="bi bi-exclamation-circle-fill me-2"></i>
+                    <span th:text="${perfil.pontosDisponiveis}">0</span> STAT POINTS AVAILABLE
+                </span>
+            </div>
+
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    </body>
+    <div class="mb-5 position-relative">
+        <h6 class="text-center font-tech mb-3 text-danger" style="letter-spacing: 2px; animation: blink 2s infinite;">
+            [ NEW QUEST ARRIVED ]
+        </h6>
+        <style>@keyframes blink { 50% { opacity: 0.5; } }</style>
+        
+        <form action="/adicionar" method="post" class="d-flex gap-2">
+            <input type="text" name="descricao" class="form-control input-system flex-grow-1" placeholder="Enter objective..." required autocomplete="off">
+            <button class="btn btn-system px-4" type="submit">ACCEPT</button>
+        </form>
+    </div>
+
+    <div class="system-window" style="animation-delay: 1s;">
+        <div class="window-content">
+            <div class="d-flex justify-content-between align-items-center mb-4 border-bottom border-secondary pb-2">
+                <h5 class="font-tech m-0" style="color: var(--system-blue);">QUEST LOG</h5>
+                <small class="text-dim font-monospace">ACTIVE TASKS</small>
+            </div>
+
+            <div th:if="${tarefas.empty}" class="text-center py-5 text-dim opacity-50">
+                <i class="bi bi-robot fs-1 d-block mb-3"></i>
+                <p class="font-monospace">NO ACTIVE QUESTS FOUND.</p>
+            </div>
+
+            <div th:each="tarefa : ${tarefas}" class="quest-row d-flex align-items-center justify-content-between">
+                <div>
+                    <div class="d-flex gap-2 align-items-center mb-1">
+                        <span class="status-tag" 
+                              th:classappend="${tarefa.status == 'Concluída' ? 'done' : 'active'}"
+                              th:text="${tarefa.status == 'Concluída' ? 'COMPLETE' : 'PENDING'}">
+                            PENDING
+                        </span>
+                        <span class="font-monospace text-dim small">#<span th:text="${tarefa.id}">01</span></span>
+                    </div>
+                    
+                    <span class="fs-5 fw-bold d-block text-white" 
+                          th:classappend="${tarefa.status == 'Concluída' ? 'text-decoration-line-through text-dim' : ''}"
+                          th:text="${tarefa.descricao}">
+                        Quest Name
+                    </span>
+                    
+                    <small style="color: var(--system-blue);">
+                        <i class="bi bi-caret-right-fill"></i> REWARD: <span th:text="${tarefa.xp}">10</span> EXP
+                    </small>
+                </div>
+
+                <div class="d-flex gap-3">
+                    <a th:if="${tarefa.status != 'Concluída'}" 
+                       th:href="@{/concluir/{id}(id=${tarefa.id})}" 
+                       class="btn-icon fs-4" title="Complete">
+                        <i class="bi bi-check2-square"></i>
+                    </a>
+                    
+                    <a th:href="@{/excluir/{id}(id=${tarefa.id})}" 
+                       class="btn-icon del fs-4" 
+                       onclick="return confirm('Delete Quest?')" title="Remove">
+                        <i class="bi bi-x-square"></i>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="text-center mt-5 text-dim font-monospace small opacity-50">
+        SYSTEM CONNECTED &bull; V2.0 &bull; ONLINE
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>

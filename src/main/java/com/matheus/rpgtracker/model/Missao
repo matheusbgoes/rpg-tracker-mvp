@@ -1,4 +1,4 @@
-package com.matheus.rpgtracker.model;
+package com.matheusgoes.rpgtracker.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -6,39 +6,30 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
-public class Tarefa {
-
+public class Missao {   
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    private String descricao;
+    private Long id;        
     
-    // ESTES CAMPOS SÃO CRITICOS PARA O ERRO NÃO OCORRER 👇
-    private int xp;     
-    private String status; 
+    private String titulo;
+    private String descricao;
+    private String status; // Exemplo: "Pendente", "Em Progresso", "Concluída"
 
-    public Tarefa() {
-        // Construtor vazio
-    }
-
-    public Tarefa(String descricao, int xp) {
+    // Constutores
+    public Missao() {}   
+    public Missao(String titulo, String descricao, String status) {
+        this.titulo = titulo;
         this.descricao = descricao;
-        this.xp = xp;
-        this.status = "Pendente";
-    }
+        this.status = status;
+    }   
 
     // Getters e Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
-
+    public String getTitulo() { return titulo; }
+    public void setTitulo(String titulo) { this.titulo = titulo; }
     public String getDescricao() { return descricao; }
     public void setDescricao(String descricao) { this.descricao = descricao; }
-
-    // VERIFIQUE SE ESTES MÉTODOS EXISTEM 👇
-    public int getXp() { return xp; }
-    public void setXp(int xp) { this.xp = xp; }
-
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
 }

@@ -1,15 +1,16 @@
 package com.matheus.rpgtracker.repository;
 
+import com.matheus.rpgtracker.model.Tarefa;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.matheus.rpgtracker.model.Tarefa;
+import java.util.List;
 
 @Repository
 public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
-    // Só de fazer isso, o Spring já cria automaticamente métodos como:
-    // .save() -> Para salvar
-    // .findAll() -> Para listar tudo
-    // .deleteById() -> Para remover
-    // É pura mágica! 🧙‍♂️
+    
+    // Método mágico do Spring Data JPA
+    // Tradução: "Busque Tudo Ordenado Por Status (Descendente) e ID (Descendente)"
+    // Isso joga as concluídas para baixo e as novas para cima.
+    List<Tarefa> findAllByOrderByStatusDescIdDesc();
 }
